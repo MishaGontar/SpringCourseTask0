@@ -17,5 +17,8 @@ public class Main {
         System.out.println(bank.giveDeposit(1000,b));
         System.out.println(bank.giveCredit(100, test));
 
+
+        ArrayList<Client> clients = context.getBean("clients",ArrayList.class);
+        clients.forEach(n-> System.out.println("Name: " + n.getName() + " salary:" + n.getSalary()));
     }
 }
