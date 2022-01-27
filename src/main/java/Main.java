@@ -1,24 +1,36 @@
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.testng.Assert;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 
 public class Main {
-    public static void main(String[] args) {
-        ApplicationContext context = new ClassPathXmlApplicationContext("context.xml");
+    private ApplicationContext context = new ClassPathXmlApplicationContext("context.xml");
+    private Client a;
+    private Client b;
+    private Client test;
+    private Bank bank;
 
-        Client a = context.getBean("client1" , Client.class);
-        Client b = context.getBean("client2" , Client.class);
-        Client test = new Client(1500);
+    @BeforeTest
+    public void create() {
+        a = context.getBean("client1", Client.class);
+        b = context.getBean("client2", Client.class);
+        test = new Client(1500);
+        bank = context.getBean("bank", Bank.class);
+    }
 
-        Bank bank = context.getBean("bank", Bank.class);
-
-        System.out.println(bank.giveDeposit(999,b));
-        System.out.println(bank.giveDeposit(1000,b));
-        System.out.println(bank.giveCredit(100, test));
-
-
-        ArrayList<Client> clients = context.getBean("clients",ArrayList.class);
-        clients.forEach(n-> System.out.println("Name: " + n.getName() + " salary:" + n.getSalary()));
+    @Test
+    public void test() {
+        Assert.assertFalse(bank.giveDeposit(999, b));
+        Assert.assertTrue(bank.giveDeposit(1000, b));
+        Assert.assertFalse(bank.giveCredit(100, test));
+    }
+    @AfterTest
+    public void additionalTask(){
+        ArrayList<Client> clients = context.getBean("clients", ArrayList.class);
+        clients.forEach(n -> System.out.println("Name: " + n.getName() + "\n Salary:" + n.getSalary() + "\n\n"));
     }
 }
