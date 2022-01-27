@@ -24,7 +24,7 @@ public class Main {
 
     @Test
     public void test() {
-        Assert.assertFalse(bank.giveDeposit(999, b));
+        Assert.assertFalse(bank.giveDeposit(999, a));
         Assert.assertTrue(bank.giveDeposit(1000, b));
         Assert.assertFalse(bank.giveCredit(100, test));
     }
